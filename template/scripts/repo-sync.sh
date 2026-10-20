@@ -63,6 +63,9 @@ type/patch|0e8a16|
 LABELS
 echo "  labels"
 
+gh repo edit "$REPO" --add-topic managed-by-repo-template >/dev/null
+echo "  topic: managed-by-repo-template"
+
 upsert_ruleset() {
   local name="$1" rules="$2" id body
   id=$(gh api "repos/$REPO/rulesets" --jq ".[] | select(.name == \"$name\") | .id" | head -n1)

@@ -1,3 +1,12 @@
+{%- if language == "python" -%}
+[env]
+_.fnox-env = { tools = true }
+_.python.venv = { path = ".venv", create = true }
+
+[plugins]
+fnox-env = "https://github.com/jdx/mise-env-fnox"
+
+{% endif -%}
 [tools]
 actionlint = "1.7.12"{# renovate: datasource=github-releases depName=actionlint packageName=rhysd/actionlint #}
 hk = "2.6.0"{# renovate: datasource=github-releases depName=hk packageName=jdx/hk #}
@@ -10,6 +19,7 @@ yamllint = "1.38.0"{# renovate: datasource=pypi depName=yamllint packageName=yam
 {%- if language == "rust" %}
 rust = { version = "1.97.0"{# renovate: datasource=github-releases depName=rust packageName=rust-lang/rust #}, components = "rustfmt,clippy" }
 {%- elif language == "python" %}
+fnox = "1.35.2"{# renovate: datasource=github-releases depName=fnox packageName=jdx/fnox #}
 ruff = "0.17.1"{# renovate: datasource=github-releases depName=ruff packageName=astral-sh/ruff #}
 ty = "0.0.72"{# renovate: datasource=github-releases depName=ty packageName=astral-sh/ty #}
 uv = "0.13.1"{# renovate: datasource=github-releases depName=uv packageName=astral-sh/uv #}
