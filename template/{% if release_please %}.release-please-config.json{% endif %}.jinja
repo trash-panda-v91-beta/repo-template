@@ -2,7 +2,7 @@
 	"packages": {
 		".": {
 			"package-name": "{{ repo_name }}",
-			"release-type": "{{ 'rust' if language == 'rust' else 'python' }}"{% if language == "python" %},
+			"release-type": "{{ {'rust': 'rust', 'python': 'python'}.get(language, 'simple') }}"{% if language == "python" %},
 			"extra-files": [
 				{ "type": "generic", "path": "README.md" },
 				{ "type": "toml", "path": "uv.lock", "jsonpath": "$.package[?(@.name.value=='{{ repo_name }}')].version" }
