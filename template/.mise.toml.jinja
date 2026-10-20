@@ -32,6 +32,11 @@ run = "cargo test"
 [tasks.test]
 description = "Run tests"
 run = "uv run pytest"
+{%- else %}
+
+[tasks.test]
+description = "Run tests"
+run = "true"
 {%- endif %}
 
 [tasks."repo:sync"]
