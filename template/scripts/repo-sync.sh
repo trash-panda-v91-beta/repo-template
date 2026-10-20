@@ -66,7 +66,7 @@ echo "  labels"
 upsert_ruleset() {
   local name="$1" rules="$2" id body
   id=$(gh api "repos/$REPO/rulesets" --jq ".[] | select(.name == \"$name\") | .id" | head -n1)
-  body=$(jq -n --arg name "$name" --argjson rules "$rules" \
+  body=$(jq -c -n --arg name "$name" --argjson rules "$rules" \
     '{name: $name, target: "branch", enforcement: "active",
       conditions: {ref_name: {include: ["~DEFAULT_BRANCH"], exclude: []}},
       rules: $rules, bypass_actors: []}')
@@ -88,7 +88,7 @@ upsert_ruleset "Branch Protection" \
   '[{"type":"deletion"},{"type":"non_fast_forward"},{"type":"required_linear_history"}]'
 
 upsert_ruleset "CI Status Checks" \
-  "$(jq -c --argjson checks "$CHECKS" \
+  "$(jq -c -n --argjson checks "$CHECKS" \
     '[{type:"required_status_checks", parameters:{strict_required_status_checks_policy:false, do_not_enforce_on_create:true, required_status_checks: ($checks | map({context: .}))}}]')"
 
 upsert_ruleset "PR Requirements" \

@@ -1,6 +1,7 @@
-amends "package://github.com/jdx/hk/releases/download/v2.6.0/hk@2.6.0#/Config.pkl"
-import "package://github.com/jdx/hk/releases/download/v2.6.0/hk@2.6.0#/Builtins.pkl"
-import "package://github.com/jdx/hk/releases/download/v2.6.0/hk@2.6.0#/Config.pkl" as Config
+{%- set hk_version = "2.6.0" %}{# renovate: datasource=github-releases depName=hk packageName=jdx/hk #}
+amends "package://github.com/jdx/hk/releases/download/v{{ hk_version }}/hk@{{ hk_version }}#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v{{ hk_version }}/hk@{{ hk_version }}#/Builtins.pkl"
+import "package://github.com/jdx/hk/releases/download/v{{ hk_version }}/hk@{{ hk_version }}#/Config.pkl" as Config
 
 fail_fast = false
 

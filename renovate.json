@@ -1,0 +1,45 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["github>trash-panda-v91-beta/renovate-config"],
+	"mise": {
+		"enabled": true
+	},
+	"dockerfile": {
+		"managerFilePatterns": ["/template/\\{% if container %\\}Dockerfile\\{% endif %\\}\\.jinja$/"]
+	},
+	"github-actions": {
+		"managerFilePatterns": ["/template/\\.github/workflows/\\{%[^/]+$"]
+	},
+	"customManagers": [
+		{
+			"customType": "regex",
+			"description": "Version pins inside copier template files, annotated with jinja comments",
+			"managerFilePatterns": ["template/**"],
+			"matchStrings": [
+				"\"(?<currentValue>[^\"\\n]+)\"[^\\n{]*\\{# renovate: datasource=(?<datasource>[\\w-]+) depName=(?<depName>[\\w:.-]+) packageName=(?<packageName>[\\w/.-]+) #\\}"
+			],
+			"extractVersionTemplate": "^v?(?<version>.*)$"
+		}
+	],
+	"packageRules": [
+		{
+			"description": "Group GitHub Actions updates into one PR",
+			"groupName": "github-actions",
+			"matchManagers": ["github-actions"]
+		},
+		{
+			"description": "Group template tool pins into one PR",
+			"groupName": "template-tools",
+			"matchManagers": ["custom.regex"]
+		},
+		{
+			"description": "Auto merge tool and action updates",
+			"matchManagers": ["mise", "custom.regex", "github-actions", "dockerfile"],
+			"automerge": true,
+			"automergeType": "pr",
+			"matchUpdateTypes": ["minor", "patch", "digest"],
+			"minimumReleaseAge": "3 days",
+			"ignoreTests": true
+		}
+	]
+}
