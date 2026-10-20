@@ -17,9 +17,15 @@ language:
   choices:
     - rust
     - python
+    - nix
     - none
   default: rust
   help: Toolchain flavour for .mise.toml, hk.pkl and the Dockerfile
+
+tooling:
+  type: bool
+  default: true
+  help: Generate .mise.toml and hk.pkl (off keeps an existing bespoke setup)
 
 container:
   type: bool
