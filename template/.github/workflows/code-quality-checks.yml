@@ -28,6 +28,14 @@ jobs:
       - name: Install mise
         uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # v5
 
+      - name: Install Nix
+        if: hashFiles('flake.nix') != ''
+        uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702 # v31.11.2
+
+      - name: Install Python deps
+        if: hashFiles('uv.lock') != ''
+        run: uv sync --all-groups
+
       - name: Run checks
         run: mise run check
 

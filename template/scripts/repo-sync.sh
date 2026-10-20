@@ -63,6 +63,9 @@ type/patch|0e8a16|
 LABELS
 echo "  labels"
 
+gh repo edit "$REPO" --add-topic managed-by-repo-template >/dev/null
+echo "  topic: managed-by-repo-template"
+
 upsert_ruleset() {
   local name="$1" rules="$2" id body
   id=$(gh api "repos/$REPO/rulesets" --jq ".[] | select(.name == \"$name\") | .id" | head -n1)
@@ -92,7 +95,7 @@ upsert_ruleset "CI Status Checks" \
     '[{type:"required_status_checks", parameters:{strict_required_status_checks_policy:false, do_not_enforce_on_create:true, required_status_checks: ($checks | map({context: .}))}}]')"
 
 upsert_ruleset "PR Requirements" \
-  '[{"type":"pull_request","parameters":{"required_approving_review_count":1,"dismiss_stale_reviews_on_push":true,"required_reviewers":[],"require_code_owner_review":true,"require_last_push_approval":true,"required_review_thread_resolution":true,"require_extra_approval_for_unattributed_changes":true,"allowed_merge_methods":["squash"]}}]'
+  '[{"type":"pull_request","parameters":{"required_approving_review_count":1,"dismiss_stale_reviews_on_push":true,"required_reviewers":[],"require_code_owner_review":true,"require_last_push_approval":true,"required_review_thread_resolution":true,"require_extra_approval_for_unattributed_changes":false,"allowed_merge_methods":["squash"]}}]'
 
 upsert_ruleset "Testing" \
   '[{"type":"required_status_checks","parameters":{"strict_required_status_checks_policy":false,"do_not_enforce_on_create":true,"required_status_checks":[{"context":"Run Tests"}]}}]'

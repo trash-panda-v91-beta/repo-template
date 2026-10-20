@@ -10,6 +10,7 @@
       "groupName": "github-actions",
       "matchManagers": ["github-actions"]
     },
+    {%- if language == "rust" %}
     {
       "description": "Group Cargo updates into one PR",
       "groupName": "cargo",
@@ -24,6 +25,16 @@
       "minimumReleaseAge": "3 days",
       "ignoreTests": true
     },
+    {%- elif language == "python" %}
+    {
+      "description": "Auto merge Python dependency updates",
+      "matchManagers": ["pep621", "uv"],
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["minor", "patch"],
+      "ignoreTests": true
+    },
+    {%- endif %}
     {
       "description": "Auto merge mise tool updates",
       "matchManagers": ["mise"],
