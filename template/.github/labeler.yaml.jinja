@@ -1,0 +1,12 @@
+---
+area/ci:
+  - changed-files:
+      - any-glob-to-any-file: ".github/**/*"
+{% if language != "none" -%}
+area/{{ language }}:
+  - changed-files:
+      - any-glob-to-any-file: "src/**/*"
+{% endif -%}
+area/docker:
+  - changed-files:
+      - any-glob-to-any-file: "Dockerfile"

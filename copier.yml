@@ -1,0 +1,31 @@
+_min_copier_version: "9.0.0"
+_subdirectory: template
+
+repo_name:
+  type: str
+  default: "{{ _copier_conf.dst_path | basename }}"
+  help: Repository name (defaults to the target folder)
+
+github_user:
+  type: str
+  default: trash-panda-v91-beta
+  help: GitHub owner of the repository
+
+language:
+  type: str
+  choices:
+    - rust
+    - python
+    - none
+  default: rust
+  help: Toolchain flavour for .mise.toml, hk.pkl and the Dockerfile
+
+container:
+  type: bool
+  default: false
+  help: Build and publish a container image to GHCR
+
+release_please:
+  type: bool
+  default: true
+  help: Versioning and releases via release-please

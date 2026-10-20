@@ -1,0 +1,10 @@
+[tools]
+"pipx:copier" = "9.19.1"
+
+[tasks."repo:new"]
+description = "Scaffold a repo from the template: mise run repo:new -- ../myrepo"
+run = "copier copy ."
+
+[tasks."repo:sync"]
+description = "Sync GitHub settings, labels and rulesets: mise run repo:sync -- owner/name"
+run = "template/scripts/repo-sync.sh"
