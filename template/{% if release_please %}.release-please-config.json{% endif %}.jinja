@@ -2,7 +2,7 @@
 	"packages": {
 		".": {
 			"package-name": "{{ repo_name }}",
-			"release-type": "{{ 'rust' if language == 'rust' else 'python' }}"
+			"release-type": "{{ {'rust': 'rust', 'python': 'python'}.get(language, 'simple') }}"
 		}
 	},
 	"bump-minor-pre-major": true,
