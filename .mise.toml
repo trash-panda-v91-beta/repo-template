@@ -17,6 +17,10 @@ run = "hk check --all"
 description = "Fix all issues"
 run = "hk fix --all"
 
+[tasks.test]
+description = "Run tests"
+run = "python3 scripts/check-template-pins.py"
+
 [tasks."repo:new"]
 description = "Scaffold a repo from the template: mise run repo:new -- ../myrepo"
 run = "copier copy ."
