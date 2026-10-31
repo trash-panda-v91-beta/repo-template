@@ -9,20 +9,20 @@ fnox-env = "https://github.com/jdx/mise-env-fnox"
 {% endif -%}
 [tools]
 actionlint = "1.7.12"{# renovate: datasource=github-releases depName=actionlint packageName=rhysd/actionlint #}
-hk = "2.7.0"{# renovate: datasource=github-releases depName=hk packageName=jdx/hk #}
-pkl = "0.32.1"{# renovate: datasource=github-releases depName=pkl packageName=apple/pkl #}
-rumdl = "0.3.0"{# renovate: datasource=github-releases depName=rumdl packageName=rvben/rumdl #}
+hk = "2.9.0"{# renovate: datasource=github-releases depName=hk packageName=jdx/hk #}
+pkl = "0.32.2"{# renovate: datasource=github-releases depName=pkl packageName=apple/pkl #}
+rumdl = "0.3.2"{# renovate: datasource=github-releases depName=rumdl packageName=rvben/rumdl #}
 shellcheck = "0.11.0"{# renovate: datasource=github-releases depName=shellcheck packageName=koalaman/shellcheck #}
-tombi = "1.8.6"{# renovate: datasource=github-releases depName=tombi packageName=tombi-toml/tombi #}
+tombi = "1.9.7"{# renovate: datasource=github-releases depName=tombi packageName=tombi-toml/tombi #}
 yamlfmt = "0.21.0"{# renovate: datasource=github-releases depName=yamlfmt packageName=google/yamlfmt #}
 yamllint = "1.38.0"{# renovate: datasource=pypi depName=yamllint packageName=yamllint #}
 {%- if language == "rust" %}
 rust = { version = "1.99.1"{# renovate: datasource=github-releases depName=rust packageName=rust-lang/rust #}, components = "rustfmt,clippy" }
 {%- elif language == "python" %}
-fnox = "1.35.2"{# renovate: datasource=github-releases depName=fnox packageName=jdx/fnox #}
-ruff = "0.17.1"{# renovate: datasource=github-releases depName=ruff packageName=astral-sh/ruff #}
-ty = "0.0.89"{# renovate: datasource=github-releases depName=ty packageName=astral-sh/ty #}
-uv = "0.13.1"{# renovate: datasource=github-releases depName=uv packageName=astral-sh/uv #}
+fnox = "1.43.0"{# renovate: datasource=github-releases depName=fnox packageName=jdx/fnox #}
+ruff = "0.17.3"{# renovate: datasource=github-releases depName=ruff packageName=astral-sh/ruff #}
+ty = "0.0.94"{# renovate: datasource=github-releases depName=ty packageName=astral-sh/ty #}
+uv = "0.13.6"{# renovate: datasource=github-releases depName=uv packageName=astral-sh/uv #}
 {%- endif %}
 
 [tasks.check]
