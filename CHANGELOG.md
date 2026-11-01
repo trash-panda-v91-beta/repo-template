@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/trash-panda-v91-beta/repo-template/compare/v1.0.0...v1.1.0) (2026-11-01)
+
+
+### Features
+
+* **deps:** update tools ([#22](https://github.com/trash-panda-v91-beta/repo-template/issues/22)) ([539c720](https://github.com/trash-panda-v91-beta/repo-template/commit/539c7203a3299f0e4e924b5c083bda814922cd03))
+
+
+### Continuous Integration
+
+* full semver in GitHub Actions pin comments ([#20](https://github.com/trash-panda-v91-beta/repo-template/issues/20)) ([8bde78f](https://github.com/trash-panda-v91-beta/repo-template/commit/8bde78f6582e783b76d57e0db81fceb195962c81))
+
 ## 1.0.0 (2026-10-20)
 
 
