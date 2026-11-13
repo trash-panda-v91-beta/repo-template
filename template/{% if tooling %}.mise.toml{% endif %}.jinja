@@ -29,7 +29,9 @@ uv = "0.13.6"{# renovate: datasource=github-releases depName=uv packageName=astr
 description = "Lint the Forgejo workflow files"
 # hk's actionlint builtin only looks at .github/workflows, and the workflows live
 # in .forgejo now, so actionlint is pointed at that path explicitly
-run = "actionlint .forgejo/workflows/*.yml"
+# the publish workflow runs on a custom `docker` runner label that actionlint
+# does not know; the ignore keeps this config-file free
+run = '''actionlint -ignore 'label "docker" is unknown' .forgejo/workflows/*.yml'''
 
 [tasks.check]
 description = "Run all checks"

@@ -1,0 +1,71 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# Publishes to the forge's container registry (<host>/<owner>/<repo>).
+# Runs on the `docker` runner label because the job needs a docker daemon; the
+# ubuntu-latest job pod in this setup has none.
+name: Publish Container Image
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Build and push
+    runs-on: docker
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Log in to the forge registry
+        env:
+          REGISTRY_USER: ${{ secrets.REGISTRY_USER }}
+          REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+          SERVER_URL: ${{ github.server_url }}
+        run: |
+          set -eu
+          if [ -z "${REGISTRY_USER:-}" ] || [ -z "${REGISTRY_TOKEN:-}" ]; then
+            echo "REGISTRY_USER and REGISTRY_TOKEN must be set as repository secrets" >&2
+            exit 1
+          fi
+          registry="${SERVER_URL#https://}"
+          registry="${registry#http://}"
+          echo "${REGISTRY_TOKEN}" | docker login "${registry}" -u "${REGISTRY_USER}" --password-stdin
+
+      - name: Build and push
+        env:
+          SERVER_URL: ${{ github.server_url }}
+          REPO: ${{ github.repository }}
+          REF_NAME: ${{ github.ref_name }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          set -eu
+          registry="${SERVER_URL#https://}"
+          registry="${registry#http://}"
+          image="${registry}/${REPO}"
+
+          # a tag push publishes that tag plus latest; a manual run publishes dev
+          if [ "${EVENT}" = "workflow_dispatch" ]; then
+            tags=("dev")
+          else
+            tags=("${REF_NAME}" "latest")
+          fi
+
+          args=()
+          for tag in "${tags[@]}"; do
+            args+=("--tag" "${image}:${tag}")
+          done
+
+          docker build "${args[@]}" .
+          for tag in "${tags[@]}"; do
+            docker push "${image}:${tag}"
+          done
+
+          echo "pushed ${image} : ${tags[*]}"
