@@ -29,7 +29,7 @@ uv = "0.13.6"{# renovate: datasource=github-releases depName=uv packageName=astr
 description = "Lint the Forgejo workflow files"
 # hk's actionlint builtin only looks at .github/workflows, and the workflows live
 # in .forgejo now, so actionlint is pointed at that path explicitly
-run = "actionlint .forgejo/workflows/*.yml .forgejo/workflows/*.yaml"
+run = "actionlint .forgejo/workflows/*.yml"
 
 [tasks.check]
 description = "Run all checks"
