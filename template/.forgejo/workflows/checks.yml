@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: Code Quality Checks
+name: Checks
 
 on:
   push:
@@ -16,8 +16,8 @@ permissions:
   contents: read
 
 jobs:
-  code-quality:
-    name: Code Quality
+  checks:
+    name: mise check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,15 +32,13 @@ jobs:
         if: hashFiles('flake.nix') != ''
         uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702 # 31.11.2
 
-      - name: Install Python deps
-        if: hashFiles('uv.lock') != ''
-        run: uv sync --all-groups
-
+      # hk runs ruff, ty, actionlint, yamllint and the markdown linter, so this
+      # one task is the whole static gate
       - name: Run checks
         run: mise run check
 
   tests:
-    name: Run Tests
+    name: mise test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -50,6 +48,10 @@ jobs:
 
       - name: Install mise
         uses: jdx/mise-action@9b200bcecbfd6303e69a4a261b2e09e3757440a7 # 5.2.0
+
+      - name: Install Python deps
+        if: hashFiles('uv.lock') != ''
+        run: uv sync --all-groups
 
       - name: Run tests
         run: mise run test
