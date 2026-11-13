@@ -32,7 +32,17 @@ container:
   default: false
   help: Build and publish a container image to GHCR
 
-release_please:
+knope:
   type: bool
   default: true
-  help: Versioning and releases via release-please
+  help: Versioning and releases via knope (works on Forgejo and GitHub)
+
+git_host:
+  type: str
+  default: "https://git.nebular-grid.space"
+  help: Base URL of the forge knope opens release PRs on
+
+git_owner:
+  type: str
+  default: "nebular-grid"
+  help: Forge owner (org or user) that owns the new repository

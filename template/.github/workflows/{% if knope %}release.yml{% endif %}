@@ -1,0 +1,45 @@
+---
+name: Release
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install knope
+        run: |
+          curl -fsSL -o /tmp/knope.tgz \
+            https://github.com/knope-dev/knope/releases/download/knope/v0.24.0/knope-x86_64-unknown-linux-musl.tgz
+          # the archive nests the binary at knope-<target>/knope
+          tar -xzf /tmp/knope.tgz -C /tmp
+          install -m 0755 /tmp/knope-x86_64-unknown-linux-musl/knope /usr/local/bin/knope
+          knope --version
+      # A normal push prepares the release PR; the commit that lands from that PR
+      # releases instead.
+      - name: Prepare release PR
+        if: "${{ !startsWith(github.event.head_commit.message, 'chore: prepare release') }}"
+        run: knope prepare-release
+        env:
+          GITEA_TOKEN: ${{ secrets.KNOPE_TOKEN }}
+          GIT_AUTHOR_NAME: knope
+          GIT_AUTHOR_EMAIL: knope@{{ git_host | replace('https://', '') }}
+          GIT_COMMITTER_NAME: knope
+          GIT_COMMITTER_EMAIL: knope@{{ git_host | replace('https://', '') }}
+      - name: Release
+        if: "${{ startsWith(github.event.head_commit.message, 'chore: prepare release') }}"
+        run: knope release
+        env:
+          GITEA_TOKEN: ${{ secrets.KNOPE_TOKEN }}
+          GIT_AUTHOR_NAME: knope
+          GIT_AUTHOR_EMAIL: knope@{{ git_host | replace('https://', '') }}
+          GIT_COMMITTER_NAME: knope
+          GIT_COMMITTER_EMAIL: knope@{{ git_host | replace('https://', '') }}
