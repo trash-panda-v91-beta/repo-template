@@ -28,28 +28,31 @@ jobs:
         env:
           REGISTRY_USER: ${{ secrets.REGISTRY_USER }}
           REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
-          SERVER_URL: ${{ github.server_url }}
+          # a repository variable, not github.server_url: forgejo reports its
+          # internal service address (plain http on :3000) there, which docker
+          # cannot talk to, and the kubelet cannot pull from either
+          REGISTRY: ${{ vars.REGISTRY_HOST }}
         run: |
           set -eu
+          if [ -z "${REGISTRY:-}" ]; then
+            echo "set the repository variable REGISTRY_HOST, for example git.example.org" >&2
+            exit 1
+          fi
           if [ -z "${REGISTRY_USER:-}" ] || [ -z "${REGISTRY_TOKEN:-}" ]; then
             echo "REGISTRY_USER and REGISTRY_TOKEN must be set as repository secrets" >&2
             exit 1
           fi
-          registry="${SERVER_URL#https://}"
-          registry="${registry#http://}"
-          echo "${REGISTRY_TOKEN}" | docker login "${registry}" -u "${REGISTRY_USER}" --password-stdin
+          echo "${REGISTRY_TOKEN}" | docker login "${REGISTRY}" -u "${REGISTRY_USER}" --password-stdin
 
       - name: Build and push
         env:
-          SERVER_URL: ${{ github.server_url }}
+          REGISTRY: ${{ vars.REGISTRY_HOST }}
           REPO: ${{ github.repository }}
           REF_NAME: ${{ github.ref_name }}
           EVENT: ${{ github.event_name }}
         run: |-
           set -eu
-          registry="${SERVER_URL#https://}"
-          registry="${registry#http://}"
-          image="${registry}/${REPO}"
+          image="${REGISTRY}/${REPO}"
 
           # a tag push publishes that tag plus latest; a manual run publishes dev
           if [ "${EVENT}" = "workflow_dispatch" ]; then
