@@ -25,7 +25,7 @@ jobs:
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
           API: ${{ github.server_url }}/api/v1
-        run: |
+        run: |-
           set -eu
           if [ -z "${TOKEN:-}" ]; then
             echo "BOT_TOKEN is not set for this repository" >&2
