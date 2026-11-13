@@ -25,9 +25,15 @@ ty = "0.0.94"{# renovate: datasource=github-releases depName=ty packageName=astr
 uv = "0.13.6"{# renovate: datasource=github-releases depName=uv packageName=astral-sh/uv #}
 {%- endif %}
 
+[tasks."lint:workflows"]
+description = "Lint the Forgejo workflow files"
+# hk's actionlint builtin only looks at .github/workflows, and the workflows live
+# in .forgejo now, so actionlint is pointed at that path explicitly
+run = "actionlint .forgejo/workflows/*.yml"
+
 [tasks.check]
 description = "Run all checks"
-run = "hk check --all"
+run = ["hk check --all", "mise run lint:workflows"]
 
 [tasks.fix]
 description = "Fix all issues"

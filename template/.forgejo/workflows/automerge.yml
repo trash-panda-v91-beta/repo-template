@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# Merge by label. Forgejo has no GitHub-style auto-merge queue, but the merge
+# endpoint accepts merge_when_checks_succeed, which is the same behaviour: the
+# merge is scheduled now and happens once the required checks and reviews pass.
+name: Auto Merge
+
+on:
+  pull_request:
+    types:
+      - labeled
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  automerge:
+    name: Schedule merge
+    if: github.event.label.name == 'automerge'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Schedule merge when checks succeed
+        env:
+          TOKEN: ${{ secrets.BOT_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          API: ${{ github.server_url }}/api/v1
+        run: |-
+          set -eu
+          if [ -z "${TOKEN:-}" ]; then
+            echo "BOT_TOKEN is not set for this repository" >&2
+            exit 1
+          fi
+          code=$(curl -sS -o /tmp/out -w '%{http_code}' -X POST \
+            -H "Authorization: token ${TOKEN}" \
+            -H "Content-Type: application/json" \
+            "${API}/repos/${REPO}/pulls/${PR}/merge" \
+            -d '{"Do":"squash","merge_when_checks_succeed":true,"delete_branch_after_merge":true}')
+          echo "merge -> ${code}"
+          cat /tmp/out
+          # 405/409: not mergeable yet, which is exactly why we queued it
+          case "${code}" in
+            200|201|204|405|409) ;;
+            *) exit 1 ;;
+          esac
