@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0](https://github.com/trash-panda-v91-beta/repo-template/compare/v1.0.0...v1.1.0) (2026-11-13)
+
+
+### Features
+
+* **ci:** move workflows to forgejo and add label driven approve and merge ([#27](https://github.com/trash-panda-v91-beta/repo-template/issues/27)) ([46a1fcb](https://github.com/trash-panda-v91-beta/repo-template/commit/46a1fcbcf6285111c2df3ef66920a1fa173d525f))
+* **ci:** publish container images to the forge registry ([#29](https://github.com/trash-panda-v91-beta/repo-template/issues/29)) ([1e4dc15](https://github.com/trash-panda-v91-beta/repo-template/commit/1e4dc15d7f57f17597dc2fa8a6949c05fdd55741))
+* **deps:** update tools ([#22](https://github.com/trash-panda-v91-beta/repo-template/issues/22)) ([539c720](https://github.com/trash-panda-v91-beta/repo-template/commit/539c7203a3299f0e4e924b5c083bda814922cd03))
+* **release:** replace release-please with knope ([#26](https://github.com/trash-panda-v91-beta/repo-template/issues/26)) ([cdb3dfb](https://github.com/trash-panda-v91-beta/repo-template/commit/cdb3dfba5140d7e04241a2e6ed3d0c4af91846d9))
+
+
+### Continuous Integration
+
+* full semver in GitHub Actions pin comments ([#20](https://github.com/trash-panda-v91-beta/repo-template/issues/20)) ([8bde78f](https://github.com/trash-panda-v91-beta/repo-template/commit/8bde78f6582e783b76d57e0db81fceb195962c81))
+
 ## 1.0.0 (2026-10-20)
 
 
